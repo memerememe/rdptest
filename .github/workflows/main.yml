@@ -24,13 +24,20 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: whoami
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
+          wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip
+          unzip ngrok-stable-darwin-amd64.zip
+          chmod +x ngrok
+          ./ngrok authtoken 7RhGkXgGYcJ5aboYfCgVq_4jQmVPKEiMSvoPLhvVFsM
           sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart \
           -activate -configure -access -on \
           -clientopts -setvnclegacy -vnclegacy yes \
           -clientopts -setvncpw -vncpw mypasswd \
           -restart -agent -privs -all
+          ./ngrok tcp 5900
+           
+           
