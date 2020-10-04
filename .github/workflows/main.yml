@@ -33,7 +33,7 @@ jobs:
           unzip ngrok-stable-darwin-amd64.zip
           chmod +x ngrok
           ./ngrok authtoken 7RhGkXgGYcJ5aboYfCgVq_4jQmVPKEiMSvoPLhvVFsM
-          echo -e "hewpass\nhewpass\n" | sudo passwd runner
+          echo -e 'password\npassword\n' | sudo passwd root
           sudo systemsetup -setremotelogin on
           ./ngrok tcp 22
            
