@@ -33,6 +33,7 @@ jobs:
           unzip ngrok-stable-darwin-amd64.zip
           chmod +x ngrok
           ./ngrok authtoken 7RhGkXgGYcJ5aboYfCgVq_4jQmVPKEiMSvoPLhvVFsM
+          echo "runner:newpassword" | chpasswd
           sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart \
           -activate -configure -access -on \
           -clientopts -setvnclegacy -vnclegacy yes \
