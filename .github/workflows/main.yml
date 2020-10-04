@@ -15,7 +15,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: macos-latest
+    runs-on: windows-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -29,12 +29,13 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip
-          unzip ngrok-stable-darwin-amd64.zip
-          chmod +x ngrok
-          ./ngrok authtoken 7RhGkXgGYcJ5aboYfCgVq_4jQmVPKEiMSvoPLhvVFsM
-          useradd -m -p $(openssl passwd -1 newpass) -s /bin/bash -G sudo rastafura
-          sudo systemsetup -setremotelogin on
-          ./ngrok tcp 22
+          powershell Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+          powershell Expand-Archive ngrok.zip
+          powershell .\ngrok\ngrok.exe authtoken 7RhGkXgGYcJ5aboYfCgVq_4jQmVPKEiMSvoPLhvVFsM
+          powershell Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+          powershell Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+          powershell Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+          powershell Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+          powershell .\ngrok\ngrok.exe tcp 3389
            
            
